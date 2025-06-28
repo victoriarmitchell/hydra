@@ -5,6 +5,9 @@ export default function store(state, emitter) {
   state.showInfo = false
   state.showUI = true
   state.showExtensions = false
+  state.showBPM = false
+  state.showVolume = false
+  state.currentAudioSource = 'microphone'
   state.errorMessage = ''
   state.isError = false
 
@@ -113,8 +116,20 @@ export default function store(state, emitter) {
   emitter.on('audio: change source', (e) => {
     if (state.hydra && state.hydra.changeAudioSource) {
       const sourceType = e.target.value
+      state.currentAudioSource = sourceType
       state.hydra.changeAudioSource(sourceType)
+      emitter.emit('render')
     }
+  })
+
+  emitter.on('ui: toggle bpm', () => {
+    state.showBPM = !state.showBPM
+    emitter.emit('render')
+  })
+
+  emitter.on('ui: toggle volume', () => {
+    state.showVolume = !state.showVolume
+    emitter.emit('render')
   })
 
   // emitter.on('mutate sketch', function () {

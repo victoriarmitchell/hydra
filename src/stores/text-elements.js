@@ -13,7 +13,11 @@ export default {
                 "hide-info": "hide info window",
                 "audio-source": "Select audio input source",
                 "microphone": "Microphone",
-                "desktop-audio": "Desktop Audio"
+                "desktop-audio": "Desktop Audio",
+                "show-bpm": "Show BPM display",
+                "hide-bpm": "Hide BPM display",
+                "show-volume": "Show volume display",
+                "hide-volume": "Hide volume display"
             },
             info: {
                 title: 'hydra',

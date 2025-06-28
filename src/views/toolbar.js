@@ -18,16 +18,21 @@ export default function toolbar(state, emit) {
 
     const audioSourceSelect = html`
         <select id="audio-source-select" class="audio-source-select" onchange=${dispatch('audio: change source')} title="${t('toolbar.audio-source')}">
-            <option value="microphone">${t('toolbar.microphone')}</option>
-            <option value="desktop">${t('toolbar.desktop-audio')}</option>
+            <option value="microphone" ${state.currentAudioSource === 'microphone' ? 'selected' : ''}>${t('toolbar.microphone')}</option>
+            <option value="desktop" ${state.currentAudioSource === 'desktop' ? 'selected' : ''}>${t('toolbar.desktop-audio')}</option>
         </select>
     `
+
+    const toggleBPM = state.showBPM ? icon("bpm", "fa-music", t('toolbar.hide-bpm'), 'ui: toggle bpm') : icon("bpm", "fa-music", t('toolbar.show-bpm'), 'ui: toggle bpm')
+    const toggleVolume = state.showVolume ? icon("volume", "fa-volume-up", t('toolbar.hide-volume'), 'ui: toggle volume') : icon("volume", "fa-volume-up", t('toolbar.show-volume'), 'ui: toggle volume')
 
     return html`<div id="toolbar-container">
         ${icon("run", `fa-play-circle ${hidden}`, t('toolbar.run'), 'editor: eval all')}
         ${icon("clear", `fa fa-trash ${hidden}`, t('toolbar.clear'), 'clear all')}
         ${toggleExtensions}
         ${audioSourceSelect}
+        ${toggleBPM}
+        ${toggleVolume}
         ${icon("shuffle", `fa-random`, t('toolbar.shuffle'), 'gallery:showExample')}
         ${icon("mutator", `fa-dice ${hidden}`, t('toolbar.random'), 'editor: randomize')}
         ${state.serverURL === null ? '' : icon("share", `fa-upload ${hidden}`, t('toolbar.upload'), 'gallery:shareSketch')}
