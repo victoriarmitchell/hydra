@@ -16,8 +16,15 @@ app.use(galleryStore)
 
 app.use(languageStore)
 app.use(extensionStore)
+// Debug current location
+console.log('Current pathname:', window.location.pathname)
+console.log('Current href:', window.location.href)
+
 app.route('/', mainView)
 app.route('/dev', mainView)
+app.route('/hydra', mainView)
+app.route('/hydra/', mainView)
+app.route('/*', mainView)  // Catch-all route
 app.mount('body')
 
 
