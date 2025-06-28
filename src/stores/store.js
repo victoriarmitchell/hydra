@@ -7,6 +7,8 @@ export default function store(state, emitter) {
   state.showExtensions = false
   state.showBPM = false
   state.showVolume = false
+  state.showTextOverlay = false
+  state.textOverlayContent = ''
   state.currentAudioSource = 'microphone'
   state.errorMessage = ''
   state.isError = false
@@ -129,6 +131,16 @@ export default function store(state, emitter) {
 
   emitter.on('ui: toggle volume', () => {
     state.showVolume = !state.showVolume
+    emitter.emit('render')
+  })
+
+  emitter.on('ui: toggle text overlay', () => {
+    state.showTextOverlay = !state.showTextOverlay
+    emitter.emit('render')
+  })
+
+  emitter.on('textOverlay:updateContent', (text) => {
+    state.textOverlayContent = text
     emitter.emit('render')
   })
 

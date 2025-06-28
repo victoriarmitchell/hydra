@@ -17,7 +17,9 @@ export default {
                 "show-bpm": "Show BPM display",
                 "hide-bpm": "Hide BPM display",
                 "show-volume": "Show volume display",
-                "hide-volume": "Hide volume display"
+                "hide-volume": "Hide volume display",
+                "show-text": "Show text overlay",
+                "hide-text": "Hide text overlay"
             },
             info: {
                 title: 'hydra',
