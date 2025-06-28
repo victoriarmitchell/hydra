@@ -106,3 +106,71 @@ a:hover {
   position: absolute;
   /* padding: 20px;  */
 }
+
+.audio-source-select {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 4px 8px;
+  margin: 0 5px;
+  border-radius: 3px;
+  font-size: 12px;
+  font-family: inherit;
+  cursor: pointer;
+  pointer-events: auto !important;
+  z-index: 100;
+  position: relative;
+}
+
+.audio-source-select:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.audio-source-select:focus {
+  outline: 1px solid #fff;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.audio-source-select option {
+  background: #000;
+  color: #fff;
+}
+
+.audio-analysis-overlay {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  pointer-events: none;
+}
+
+.audio-metric {
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  padding: 8px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 80px;
+}
+
+.metric-value {
+  color: #fff;
+  font-family: 'Courier New', monospace;
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.metric-label {
+  color: #ccc;
+  font-family: 'Courier New', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 2px;
+}
