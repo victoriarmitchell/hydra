@@ -110,7 +110,12 @@ export default function store(state, emitter) {
     emitter.emit('render')
   })
 
-
+  emitter.on('audio: change source', (e) => {
+    if (state.hydra && state.hydra.changeAudioSource) {
+      const sourceType = e.target.value
+      state.hydra.changeAudioSource(sourceType)
+    }
+  })
 
   // emitter.on('mutate sketch', function () {
 

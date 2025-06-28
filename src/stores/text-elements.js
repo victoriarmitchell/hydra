@@ -10,7 +10,10 @@ export default {
                 random: "make random change",
                 "load-extension": "load library or extension",
                 "show-info": "show info window",
-                "hide-info": "hide info window"
+                "hide-info": "hide info window",
+                "audio-source": "Select audio input source",
+                "microphone": "Microphone",
+                "desktop-audio": "Desktop Audio"
             },
             info: {
                 title: 'hydra',
