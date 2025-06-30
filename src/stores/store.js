@@ -135,8 +135,15 @@ export default function store(state, emitter) {
   })
 
   emitter.on('ui: toggle text overlay', () => {
-    state.showTextOverlay = !state.showTextOverlay
-    emitter.emit('render')
+    // Open native browser dialog instead of broken overlay controls
+    const currentText = state.textOverlayContent || 'HYDRA'
+    const newText = window.prompt('Enter text for overlay:', currentText)
+    if (newText !== null) { // User didn't cancel
+      state.textOverlayContent = newText
+      // Keep the overlay "on" so the text renders, but don't show controls
+      state.showTextOverlay = true
+      emitter.emit('render')
+    }
   })
 
   emitter.on('textOverlay:updateContent', (text) => {

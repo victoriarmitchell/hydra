@@ -40,6 +40,7 @@ a:hover {
   left: 0px;
   width: 100%;
   height: 100%;
+  pointer-events: none;
 }
 
 #code {
@@ -180,13 +181,13 @@ a:hover {
   position: fixed;
   bottom: 20px;
   right: 20px;
-  z-index: 150;
+  z-index: 9999;
   background: rgba(0, 0, 0, 0.9);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 2px solid rgba(255, 255, 255, 0.8);
   border-radius: 6px;
   padding: 15px;
   min-width: 300px;
-  pointer-events: auto;
+  pointer-events: auto !important;
   margin-bottom: 120px; /* Space above BPM/volume displays */
 }
 
@@ -196,19 +197,46 @@ a:hover {
   gap: 12px;
 }
 
+.text-input-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
 .text-input {
-  background: rgba(0, 0, 0, 0.7);
-  border: 1px solid rgba(255, 255, 255, 0.4);
+  background: rgba(0, 0, 0, 0.9) !important;
+  border: 3px solid rgba(255, 0, 0, 0.8) !important;
   border-radius: 4px;
-  color: #fff;
+  color: #fff !important;
   font-family: 'Courier New', monospace;
   font-size: 14px;
   padding: 8px 12px;
-  width: 100%;
+  flex: 1;
   box-sizing: border-box;
-  position: relative;
-  z-index: 151;
-  pointer-events: auto;
+  position: relative !important;
+  z-index: 999999 !important;
+  pointer-events: auto !important;
+  cursor: text !important;
+}
+
+.dialog-button {
+  background: rgba(0, 200, 0, 0.9) !important;
+  border: 3px solid rgba(0, 255, 0, 0.8) !important;
+  border-radius: 4px;
+  color: #fff !important;
+  font-size: 18px;
+  padding: 8px 12px;
+  cursor: pointer !important;
+  position: relative !important;
+  z-index: 999999 !important;
+  pointer-events: auto !important;
+  min-width: 50px;
+  height: auto;
+}
+
+.dialog-button:hover {
+  background: rgba(0, 255, 0, 0.9) !important;
+  border-color: rgba(255, 255, 255, 0.8) !important;
 }
 
 .text-input:focus {

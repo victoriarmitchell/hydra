@@ -41,9 +41,12 @@ export default class TextOverlay extends Component {
     if (window.s0 && typeof window.s0.init === 'function') {
       try {
         this.textSource = window.s0.init({src: this.canvas})
+        console.log('Text source initialized successfully:', this.textSource)
       } catch (e) {
         console.warn('Could not initialize text source:', e)
       }
+    } else {
+      console.warn('s0 not available for text source initialization')
     }
     
     this.updateTextCanvas()
@@ -73,6 +76,7 @@ export default class TextOverlay extends Component {
     
     // Get text to display
     const text = this.state.textOverlayContent || this.defaultText
+    console.log('Drawing text to canvas:', text)
     
     // Calculate position
     const x = canvas.width * this.positionX
@@ -80,20 +84,87 @@ export default class TextOverlay extends Component {
     
     // Draw text
     ctx.fillText(text, x, y)
+    console.log('Text drawn at position:', x, y)
+    
+    // Try to initialize text source if not already done
+    if (!this.textSource && window.s0) {
+      try {
+        console.log('Attempting to initialize s0 with canvas:', this.canvas)
+        
+        // Try different initialization methods
+        if (typeof window.s0.init === 'function') {
+          this.textSource = window.s0.init({src: this.canvas})
+          console.log('s0.init() result:', this.textSource)
+        }
+        
+        // Alternative: try direct assignment
+        if (!this.textSource) {
+          window.s0.src = this.canvas
+          this.textSource = window.s0
+          console.log('Direct s0 assignment result:', this.textSource)
+          console.log('textSource has update method:', typeof this.textSource.update)
+        }
+        
+      } catch (e) {
+        console.warn('Could not initialize text source on demand:', e)
+      }
+    }
     
     // Update hydra source if available
-    if (this.textSource && typeof this.textSource.update === 'function') {
+    console.log('Checking text source for update:', !!this.textSource, typeof this.textSource?.update)
+    if (this.textSource) {
       try {
-        this.textSource.update()
+        // Update the source canvas
+        if (typeof this.textSource.update === 'function') {
+          this.textSource.update()
+        }
+        
+        // Auto-blend text with current output
+        this.autoBlendText()
+        
+        console.log('Text source updated successfully')
       } catch (e) {
         console.warn('Could not update text source:', e)
       }
+    } else {
+      console.warn('Text source not available for update. s0 available:', !!window.s0, 'textSource:', !!this.textSource)
     }
   }
+
+  autoBlendText() {
+    try {
+      if (this.textSource && this.state.textOverlayContent) {
+        // Store text source globally for access
+        window._textOverlay = this.textSource
+        window._textOpacity = this.opacity
+        
+        console.log('Text overlay ready - use .layer(s0, 0.8) in your hydra chains')
+        
+        // Provide helper functions
+        window.showTextOverlay = () => {
+          console.log('To add text overlay, append this to your hydra chain:')
+          console.log('.layer(s0, 0.8).out()')
+          console.log('Example: osc(60, 0.1, 0.8).layer(s0, 0.8).out()')
+        }
+      }
+    } catch (e) {
+      console.warn('Could not setup text overlay:', e)
+    }
+  }
+
 
   updateText(text) {
     this.emit('textOverlay:updateContent', text)
     this.updateTextCanvas()
+  }
+
+  openTextDialog() {
+    console.log('Dialog button clicked!')
+    const currentText = this.state.textOverlayContent || this.defaultText
+    const newText = window.prompt('Enter text for overlay:', currentText)
+    if (newText !== null) { // User didn't cancel
+      this.updateText(newText)
+    }
   }
 
   updateStyle(properties) {
@@ -116,52 +187,13 @@ export default class TextOverlay extends Component {
   }
 
   createElement() {
-    if (!this.state.showTextOverlay) {
-      return html`<div id="text-overlay" style="display: none;"></div>`
-    }
-
-    // Update canvas when visible
-    if (this.canvas) {
+    // Always update canvas when text overlay is enabled (even without visible controls)
+    if (this.state.showTextOverlay && this.canvas) {
       this.updateTextCanvas()
     }
 
-    return html`
-      <div id="text-overlay" class="text-overlay-controls">
-        <div class="text-control-group">
-          <input 
-            type="text" 
-            class="text-input" 
-            placeholder="Enter text..."
-            value="${this.state.textOverlayContent || ''}"
-            oninput=${(e) => this.updateText(e.target.value)}
-          />
-          <div class="text-controls">
-            <label>
-              Size: 
-              <input 
-                type="range" 
-                min="12" 
-                max="200" 
-                value="${this.fontSize}"
-                oninput=${(e) => this.updateStyle({fontSize: parseInt(e.target.value)})}
-              />
-              <span>${this.fontSize}px</span>
-            </label>
-            <label>
-              Opacity: 
-              <input 
-                type="range" 
-                min="0" 
-                max="1" 
-                step="0.1" 
-                value="${this.opacity}"
-                oninput=${(e) => this.updateStyle({opacity: parseFloat(e.target.value)})}
-              />
-              <span>${Math.round(this.opacity * 100)}%</span>
-            </label>
-          </div>
-        </div>
-      </div>
-    `
+    // Don't render any visible controls - they're broken
+    // The text will still render on the canvas via the hidden canvas
+    return html`<div id="text-overlay" style="display: none;"></div>`
   }
 }
