@@ -146,6 +146,20 @@ export default class TextOverlay extends Component {
           console.log('.layer(s0, 0.8).out()')
           console.log('Example: osc(60, 0.1, 0.8).layer(s0, 0.8).out()')
         }
+        
+        // Add a function to test if a chain is safe for layering
+        window.testChain = (chain) => {
+          console.log('Chain object:', chain)
+          console.log('Has layer method:', typeof chain?.layer === 'function')
+          console.log('Is undefined:', chain === undefined)
+          console.log('Is null:', chain === null)
+          if (chain && typeof chain.layer === 'function') {
+            console.log('✅ Safe to add .layer(s0, 0.8)')
+          } else {
+            console.log('❌ NOT safe - this will cause an error')
+          }
+          return chain
+        }
       }
     } catch (e) {
       console.warn('Could not setup text overlay:', e)
